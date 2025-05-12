@@ -28,6 +28,11 @@ function App() {
     setSelectedFile(e.target.files[0]);
   };
 
+
+  const handleDeserialization = async () => {
+    const url = "https://us-central1-cognispace.cloudfunctions.net/mkr-file-processor";
+  }
+
   // Handle file upload
   const handleUpload = async () => {
     if (selectedFile) {

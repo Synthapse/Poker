@@ -23,13 +23,19 @@ gcloud functions deploy uploadFileFunction \
 
 Java -> 
 
+gcloud info --run-diagnostics
+
+
 gcloud functions deploy mkr-file-processor \
   --entry-point com.example.MkrFileProcessor \
   --runtime java21 \
   --trigger-http \
   --gen2 \
   --region=us-central1 \
-  --allow-unauthenticated
+  --allow-unauthenticated \
+  --source . \
 
 
   ERROR: (gcloud.functions.deploy) OperationError: code=3, message=Build failed with status: FAILURE and message: function has neither pom.xml nor already-built jar file; directory has these entries: .googlebuild, main.java. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/b87995aa-5437-4da9-abbb-55a41b897076?project=946555989276.
+
+  Lolek2345!
