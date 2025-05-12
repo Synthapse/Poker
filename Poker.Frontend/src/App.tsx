@@ -2,21 +2,36 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 //@ts-ignore
 import * as deck from '@letele/playing-cards';
-//import "react-poker/styles.css"
+
 import './App.css';
 
 
-// (possible exports: B1, B2, C10, C2, C3, C4, C5, C6, C7, C8, C9, Ca, Cj, Ck, Cq, D10, D2, D3, D4, D5, D6, D7, D8, D9, Da, Dj, Dk, Dq, H10, H2, H3, H4, H5, H6, H7, H8, H9, Ha, Hj, Hk, Hq, J1, J2, S10, S2, S3, S4, S5, S6, S7, S8, S9, Sa, Sj, Sk, Sq)
 
-// [rank][suit]
 
 
 const cards = ["Ks", "Qs", "2h", "6c", "Kc"].map(x => {
-  let reversed = x.split('').reverse().join('');
-  return reversed.charAt(0).toUpperCase() + reversed.slice(1).toLowerCase();
+
+  if (x[1] == 's') {
+    return x[0] + 'a'
+  }
+
+  if (x[1] == 'h') {
+    return x[0] + 'n'
+  }
+
+  if (x[1] == 'c') {
+    return x[0] + 'f'
+  }
+
+  if (x[1] == 'd') {
+    return x[0] + 'e'
+  }
+
 });
 
 function App() {
+
+  console.log(cards);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -76,13 +91,14 @@ function App() {
     <>
       <div style={{ display: 'flex', padding: 80 }} className="App">
         {cards.map((cardKey, index) => {
-          // Dynamically access the card from the 'deck' using the reversed key
-
-          console.log(cardKey);
-          const CardComponent = deck[cardKey];
+          console.log(cardKey); // e.g., "2e"
           return (
-            <div key={index} style={{ marginRight: '60px' }}>
-              <CardComponent width={'100%'} height={'100%'} />
+            <div key={index} style={{ marginRight: '20px' }}>
+              <img
+                src={`/deck/${cardKey?.toLowerCase()}.png`}
+                alt={cardKey}
+                style={{ width: '40px', height: '60px' }}
+              />
             </div>
           );
         })}
