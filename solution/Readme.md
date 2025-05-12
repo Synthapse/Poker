@@ -2,34 +2,8 @@
 https://filext.com/file-extension/MKR
 
 
-1. Game State Representation
-The vector could represent:
-
--> Player position (e.g., small blind, big blind).
--> Current pot size.
--> Betting actions (fold, call, raise).
--> Street (preflop, flop, turn, river).
-
-
-🧠 What You’ll Get After Unzipping
-You’ll likely see files like:
-
--> tree — could be a serialized or binary representation of a game tree
-all possible game states or actions in a tree-like structure
-
-
--> board — likely stores board cards or configuration
-The board file likely stores information about the game board state, such as the cards in a card game or positions on a board game.
-
-
--> storedstrategy — large file that probably holds actual solver output
-This appears to be the largest file and seems to store the actual solver output. This could be a matrix, strategy table, or even a serialized data structure. It could be the most important file, as it contains the pre-calculated decisions or optimal moves based on the solver's calculations.
-
-
 - Files 0 and 1 may represent large data arrays (e.g., features or samples and their corresponding labels or keys).
-
 - File 2 could be model-related data: probabilities, weights, scores, or other computed values.
-
 - Files 3–19 may provide:
 
 Descriptive metadata (like what each index in files 0/1/2 means),

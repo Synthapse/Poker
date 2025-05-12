@@ -2,6 +2,7 @@
   "name": "p",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/auxilia-poker",
   "dependencies": {
     "@letele/playing-cards": "^0.1.0",
     "@testing-library/dom": "^10.4.0",
