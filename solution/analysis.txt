@@ -1,0 +1,148 @@
+Analysis Results:
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/18
+Type: Binary data
+Size: 43 bytes
+Content preview (hex): aced0005757200025b4a782004b512b1759302000078700000000200000000096ac00000000000096ac000
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/9
+Type: Binary data
+Size: 82 bytes
+Content preview (hex): aced00057372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/0
+Type: Binary data
+Size: 2165827 bytes
+Content preview (hex): aced0005757200025b443ea68c14ab635a1e0200007870000421850000000000000000000000000000000000000000000000
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/11
+Type: Binary data
+Size: 81 bytes
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/7
+Type: Binary data
+Size: 82 bytes
+Content preview (hex): aced00057372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/16
+Type: Binary data
+Size: 81 bytes
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/6
+Type: Binary data
+Size: 83 bytes
+Content preview (hex): aced0005737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a657870000000
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/17
+Type: Binary data
+Size: 43 bytes
+Content preview (hex): aced0005757200025b443ea68c14ab635a1e020000787000000002429ac0551f07d4d642a6c1e550779c7c
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/1
+Type: Binary data
+Size: 2165827 bytes
+Content preview (hex): aced0005757200025b443ea68c14ab635a1e0200007870000421850000000000000000000000000000000000000000000000
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/10
+Type: Binary data
+Size: 82 bytes
+Content preview (hex): aced0005737200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f7249
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/19
+Type: Binary data
+Size: 43 bytes
+Content preview (hex): aced0005757200025b4a782004b512b175930200007870000000020000000000000886000000000041eaf0
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/8
+Type: Binary data
+Size: 82 bytes
+Content preview (hex): aced00057372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/4
+Type: Binary data
+Size: 147 bytes
+Content preview (hex): aced0005757200135b4c6a6176612e6c616e672e4f626a6563743b90ce589f1073296c020000787000000002737200116a61
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/15
+Type: Binary data
+Size: 81 bytes
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/3
+Type: Binary data
+Size: 163 bytes
+Content preview (hex): 00000000000082d2000000000000000100000001000000020000000000000001000000030001ec30000537f0000537f00003
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/12
+Type: Binary data
+Size: 81 bytes
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/2
+Type: Binary data
+Size: 1060610 bytes
+Content preview (hex): 7801ecbd69d72d55b1358880022aa8a8608328028a7d8f1dca55b1bf97ab62838a28b87fc0fbd618efa8fa54bf64d10922a0
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/13
+Type: Binary data
+Size: 81 bytes
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/5
+Type: Binary data
+Size: 84 bytes
+Content preview (hex): aced0005737200106a6176612e6c616e672e446f75626c6580b3c24a296bfb0402000144000576616c7565787200106a6176
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+File: subfiles/40bb-RIVER-BTNvBB-KQ2ss-bc-6x-xx-Kc/14
+Type: Binary data
+Size: 81 bytes
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Deserialization instructions: This file's format is not recognized for deserialization. It may require custom handling.
+
+
+
+Analysis Results:
+Content preview (hex): aced0005757200025b4a782004b512b1759302000078700000000200000000096ac00000000000096ac000
+Content preview (hex): aced00057372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e
+Content preview (hex): aced0005757200025b443ea68c14ab635a1e0200007870000421850000000000000000000000000000000000000000000000
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Content preview (hex): aced00057372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Content preview (hex): aced0005737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a657870000000
+Content preview (hex): aced0005757200025b443ea68c14ab635a1e020000787000000002429ac0551f07d4d642a6c1e550779c7c
+Content preview (hex): aced0005757200025b443ea68c14ab635a1e0200007870000421850000000000000000000000000000000000000000000000
+Content preview (hex): aced0005737200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f7249
+Content preview (hex): aced0005757200025b4a782004b512b175930200007870000000020000000000000886000000000041eaf0
+Content preview (hex): aced00057372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e
+Content preview (hex): aced0005757200135b4c6a6176612e6c616e672e4f626a6563743b90ce589f1073296c020000787000000002737200116a61
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Content preview (hex): 00000000000082d2000000000000000100000001000000020000000000000001000000030001ec30000537f0000537f00003
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Content preview (hex): 7801ecbd69d72d55b1358880022aa8a8608328028a7d8f1dca55b1bf97ab62838a28b87fc0fbd618efa8fa54bf64d10922a0
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+Content preview (hex): aced0005737200106a6176612e6c616e672e446f75626c6580b3c24a296bfb0402000144000576616c7565787200106a6176
+Content preview (hex): aced0005737200116a6176612e6c616e672e496e746567657212e2a0a4f781873802000149000576616c7565787200106a61
+
+
+ACED 0005 signature is a standard marker for Java serialization, specifically for objects serialized with ObjectOutputStream

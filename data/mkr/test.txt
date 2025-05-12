@@ -1,0 +1,21 @@
+File: foldvs100.csv has 12704 lines.
+File: callvs33.csv has 10208 lines.
+File: b100&fold.csv has 4439 lines.
+File: fv33.csv has 9298 lines.
+File: b33&allin.csv has 2061 lines.
+File: r100&foldSTRATEGY.csv has 18004 lines.
+File: r100vs33.csv has 5104 lines.
+File: callvs100.csv has 10920 lines.
+File: b33&fold.csv has 14882 lines.
+File: r100&fold.csv has 1872 lines.
+File: b33.csv has 25908 lines.
+File: allinvs100.csv has 1018 lines.
+File: checkback.csv has 16247 lines.
+File: b33&call.csv has 9139 lines.
+File: r100&call.csv has 3378 lines.
+File: sum.py has 25 lines.
+File: check.csv has 24276 lines.
+File: b100&call.csv has 4076 lines.
+File: b100.csv has 8242 lines.
+
+Total number of lines in all files: 181 801
