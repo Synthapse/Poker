@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  BUCKET: 'poker'
+  BUCKET: 'auxilia-poker'
   ENVIRONMENT: true
 
 jobs:
