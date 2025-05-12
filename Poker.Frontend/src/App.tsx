@@ -6,9 +6,6 @@ import * as deck from '@letele/playing-cards';
 import './App.css';
 
 
-
-
-
 const cards = ["Ks", "Qs", "2h", "6c", "Kc"].map(x => {
 
   if (x[1] == 's') {
@@ -44,9 +41,36 @@ function App() {
   };
 
 
-  const handleDeserialization = async () => {
-    const url = "https://us-central1-cognispace.cloudfunctions.net/mkr-file-processor";
+  const downloadFile = async () => {
+
+
   }
+
+
+  const handleDeserialization = async () => {
+    //12.05.2025 -> pass folder instead file (based on fileName)
+    const url = `https://us-central1-cognispace.cloudfunctions.net/mkr-file-processor?file=test (2).mkr/0_test (2).mkr`;
+  
+    try {
+      const response = await fetch(url, {
+        method: 'GET', // or 'POST' if needed, but must match what the function supports
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const text = await response.text(); // response is plain text
+      console.log('Deserialized data:', text);
+      // optionally: setFilesData(text);
+    } catch (error) {
+      console.error('Error during deserialization:', error);
+    }
+  };
+  
 
   // Handle file upload
   const handleUpload = async () => {
@@ -72,6 +96,7 @@ function App() {
 
         if (data.fileUrl) {
           setFileUrl(data.fileUrl); // Get the file URL after uploading
+          handleDeserialization()
           alert('File uploaded successfully!');
         } else {
           alert('Error uploading file.');
@@ -107,6 +132,14 @@ function App() {
 
       <button onClick={handleUpload} disabled={uploading}>
         {uploading ? 'Uploading...' : 'Upload'}
+      </button>
+
+      <button onClick={handleDeserialization}>
+        Deserialize
+      </button>
+
+      <button onClick={downloadFile}>
+        Download
       </button>
 
       {fileUrl && (

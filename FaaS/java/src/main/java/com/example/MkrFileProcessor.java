@@ -8,6 +8,13 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.Map;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 
 public class MkrFileProcessor implements HttpFunction {
 
@@ -15,6 +22,16 @@ public class MkrFileProcessor implements HttpFunction {
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws Exception {
+        response.appendHeader("Access-Control-Allow-Origin", "*"); // Or restrict to specific origin
+        response.appendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        response.appendHeader("Access-Control-Allow-Headers", "Content-Type");
+
+        // Handle preflight (OPTIONS) request
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatusCode(204); // No Content
+            return;
+        }
+
         String fileName = request.getFirstQueryParameter("file").orElse("");
         if (fileName.isEmpty()) {
             response.setStatusCode(400);
@@ -30,36 +47,61 @@ public class MkrFileProcessor implements HttpFunction {
             return;
         }
 
-        // Download the file to a temporary location
-        Path tempFile = Files.createTempFile("mkr_", ".zip");
+        // Download the file from Cloud Storage
+        Path tempFile = Files.createTempFile("mkr_", ".dat");
         blob.downloadTo(tempFile);
+        File inputFile = tempFile.toFile();
 
-        // Extract the ZIP file
-        Path extractDir = Files.createTempDirectory("mkr_extract_");
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(tempFile.toFile()))) {
-            ZipEntry entry;
-            while ((entry = zis.getNextEntry()) != null) {
-                Path newFilePath = extractDir.resolve(entry.getName());
-                if (entry.isDirectory()) {
-                    Files.createDirectories(newFilePath);
+
+        StringBuilder outputBuilder = new StringBuilder();
+
+        if (inputFile.isFile()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(inputFile))) {
+                Object obj = ois.readObject();
+
+                outputBuilder.append("Deserialized object from file: ").append(inputFile.getName()).append("\n");
+
+                if (obj instanceof int[]) {
+                    outputBuilder.append(Arrays.toString((int[]) obj));
+                } else if (obj instanceof double[]) {
+                    outputBuilder.append(Arrays.toString((double[]) obj));
+                } else if (obj instanceof long[]) {
+                    outputBuilder.append(Arrays.toString((long[]) obj));
+                } else if (obj instanceof float[]) {
+                    outputBuilder.append(Arrays.toString((float[]) obj));
+                } else if (obj instanceof boolean[]) {
+                    outputBuilder.append(Arrays.toString((boolean[]) obj));
+                } else if (obj instanceof char[]) {
+                    outputBuilder.append(Arrays.toString((char[]) obj));
+                } else if (obj instanceof short[]) {
+                    outputBuilder.append(Arrays.toString((short[]) obj));
+                } else if (obj instanceof Object[]) {
+                    outputBuilder.append(Arrays.toString((Object[]) obj));
+                } else if (obj instanceof List || obj instanceof Set || obj instanceof Map || obj instanceof String) {
+                    outputBuilder.append(obj.toString());
                 } else {
-                    Files.createDirectories(newFilePath.getParent());
-                    try (FileOutputStream fos = new FileOutputStream(newFilePath.toFile())) {
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = zis.read(buffer)) > 0) {
-                            fos.write(buffer, 0, len);
-                        }
-                    }
+                    outputBuilder.append("Unknown object type: ").append(obj.getClass().getName()).append("\n");
+                    outputBuilder.append(obj.toString());
                 }
-                zis.closeEntry();
+
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                response.setStatusCode(500);
+                response.getWriter().write("Error during deserialization.");
+                return;
             }
         }
 
-        // Process extracted files as needed
-        // For example, deserialize files, analyze content, etc.
+        // Save output to bucket as a text file
+        String outputBlobName = "deserialized/" + inputFile.getName() + ".txt";
+        BlobId outputBlobId = BlobId.of(BUCKET_NAME, outputBlobName);
+        BlobInfo outputBlobInfo = BlobInfo.newBuilder(outputBlobId)
+            .setContentType("text/plain")
+            .build();
+
+        storage.create(outputBlobInfo, outputBuilder.toString().getBytes(StandardCharsets.UTF_8));
 
         response.setStatusCode(200);
-        response.getWriter().write("File processed successfully.");
+        response.getWriter().write("Deserialized content uploaded to: " + outputBlobName);
     }
 }

@@ -82,7 +82,7 @@ def uploadFileFunction(request):
 
         # Save all extracted files to the bucket
         for path, size in file_details:
-            upload_to_bucket(path, os.path.basename(path))
+            upload_to_bucket(path, f"{filename}/{os.path.basename(path)}")
         
         os.remove(local_path)
 
