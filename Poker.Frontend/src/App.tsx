@@ -34,11 +34,15 @@ function App() {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+
   const [deserializing, setDeserializing] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+
+
   const [fileUrl, setFileUrl] = useState('');
   const [filesData, setFilesData] = useState<any[]>([]);
 
-  const [fileName, setFileName] = useState<string>('test.mkr');
+  const [fileName, setFileName] = useState<string>('');
 
   const [cards, setCards] = useState<any[]>([]); // Initialize cards state as an empty array
 
@@ -52,8 +56,11 @@ function App() {
 
 
   const downloadFiles = async () => {
-    const functionUrl = "https://us-central1-cognispace.cloudfunctions.net/downloadFilesFunction"; // Replace with your function URL
 
+    setDownloading(true);
+    setTimeout(() => {
+    }, 5000);
+    const functionUrl = "https://us-central1-cognispace.cloudfunctions.net/downloadFilesFunction"; // Replace with your function URL
     const folderName = fileName + '/deserialized/'
 
     console.log(folderName);
@@ -105,12 +112,14 @@ function App() {
       setFiles(processedFiles);
     } catch (err) {
       console.error("Failed to fetch files:", err);
+    } finally {
+      setDownloading(false);
     }
   };
 
 
 
-  const handleDeserialization = async () => {
+  const handleDeserialization = async (fileName: string) => {
     //12.05.2025 -> pass folder instead file (based on fileName)
     //✅ Fix: Ensure folderName ends with /
     const url = `https://us-central1-cognispace.cloudfunctions.net/mkr-file-processor?file=${fileName}/`;
@@ -131,9 +140,15 @@ function App() {
       const text = await response.text(); // response is plain text
       console.log('Deserialized data:', text);
       setDeserializing(false);
+      setTimeout(() => {
+      }, 3000);
+      downloadFiles();
       // optionally: setFilesData(text);
     } catch (error) {
       console.error('Error during deserialization:', error);
+      setTimeout(() => {
+      }, 3000);
+      downloadFiles();
       setDeserializing(false);
     }
   };
@@ -168,18 +183,16 @@ function App() {
 
         if (data.fileUrl) {
           setFileUrl(data.fileUrl); // Get the file URL after uploading
-          handleDeserialization()
-          handleDeserialization()
-          alert('File uploaded successfully!');
-        } else {
-          alert('Error uploading file.');
         }
       } catch (error) {
         console.error('Error uploading file:', error);
         alert('Error uploading file.');
       } finally {
         setUploading(false);
-        handleDeserialization();
+        setTimeout(() => {
+        }, 3000);
+        //@ts-ignore
+        handleDeserialization(selectedFile?.name);
       }
     } else {
       alert('Please select a file to upload');
@@ -189,10 +202,13 @@ function App() {
   return (
     <>
       <div style={{ display: 'flex', padding: 80 }} className="App">
-
         {!cards || cards.length === 0 && (
-          <div style={{ marginRight: '20px' }}>
-            No Cards
+          <div style={{ display: 'flex' }}>
+            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
+            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
+            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
+            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
+            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
           </div>
         )}
         {cards.map((cardKey, index) => {
@@ -211,7 +227,7 @@ function App() {
       <input type="file" onChange={handleFileChange} />
 
       <button onClick={handleUpload} disabled={uploading}>
-        {uploading ? 'Uploading...' : 'Upload'}
+        {uploading ? 'Uploading...' : 'Start processing'}
       </button>
 
       {fileName && (
@@ -227,11 +243,17 @@ function App() {
         </div>
       )}
 
+      {downloading && (
+        <div>
+          <p>Downloading...</p>
+        </div>
+      )}
 
+      {/* 
       <button onClick={handleDeserialization}>
         Deserialize
-      </button>
-
+      </button> */}
+      
       <button onClick={() => downloadFiles()}>
         Download Files
       </button>

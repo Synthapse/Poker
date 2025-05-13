@@ -109,13 +109,23 @@ public class MkrFileProcessor implements HttpFunction {
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
-                    //response.setStatusCode(500);
-                    response.getWriter().write("Error during deserialization of file: " + blob.getName() + "\n" + e.getMessage());
+                    
+                    //try {
+                    overallOutput.append("Error during deserialization of file: " + blob.getName() + "\n" + e.getMessage());
+                        //response.getWriter().write("Error during deserialization of file: " + blob.getName() + "\n" + e.getMessage());
+                    // } catch (IOException ioException) {
+                    //     ioException.printStackTrace(); // Avoid swallowing secondary exceptions
+                    // }
 
-                    // Try use also .jar function
+                    // Attempt fallback via .jar function
+                    System.out.println("Attempting to download .jar from Cloud Storage...");
                     downloadJarFromCloudStorage();
+                    System.out.println(".jar download completed.");
+
+                    System.out.println("Running fallback command...");
                     String output = runCommand(inputFile);
                     overallOutput.append(output).append("\n");
+                    System.out.println("Fallback command executed.");
 
                     String relativeName = blob.getName().substring(folderName.length());
                     String outputBlobName = folderName + "deserialized/" + relativeName + ".txt";
@@ -123,10 +133,16 @@ public class MkrFileProcessor implements HttpFunction {
                     BlobInfo outputBlobInfo = BlobInfo.newBuilder(outputBlobId)
                         .setContentType("text/plain")
                         .build();
-                    // Continue function
+                    
+                    // Save fallback output
                     storage.create(outputBlobInfo, outputBuilder.toString().getBytes(StandardCharsets.UTF_8));
 
-                    overallOutput.append("Processed file: ").append(blob.getName()).append(" -> ").append(outputBlobName).append("\n");
+                    overallOutput.append("Processed file (fallback): ")
+                                .append(blob.getName())
+                                .append(" -> ")
+                                .append(outputBlobName)
+                                .append("\n");
+
                     continue;
                 }
             }
