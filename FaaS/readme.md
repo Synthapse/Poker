@@ -14,11 +14,30 @@ Serverless:
 
 Python -> 
 
+
+1. Upload mkr file to Google Cloud Storage
+
 gcloud functions deploy uploadFileFunction \
   --runtime python310 \
   --trigger-http \
   --allow-unauthenticated \
   --source . \
+
+
+
+2.Download Deserialized Files
+
+
+gcloud functions deploy downloadFilesFunction \
+  --gen2 \
+  --runtime python311 \
+  --region us-central1 \
+  --entry-point downloadFilesFunction \
+  --trigger-http \
+  --allow-unauthenticated
+
+
+
 
 
 Java -> 
