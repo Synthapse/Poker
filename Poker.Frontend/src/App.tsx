@@ -2,25 +2,33 @@ import React, { useState } from 'react';
 import './App.css';
 
 
-const cards = ["Ks", "Qs", "2h", "6c", "Kc"].map(x => {
 
-  if (x[1] == 's') {
-    return x[0] + 'a'
+const transformCards = (cardsArray: any) => {
+  return cardsArray.map((x: string[]) => {
+    if (x[1] === 's') {
+      return x[0] + 'a';  // 's' -> 'a'
+    }
+    if (x[1] === 'h') {
+      return x[0] + 'n';  // 'h' -> 'n'
+    }
+    if (x[1] === 'c') {
+      return x[0] + 'f';  // 'c' -> 'f'
+    }
+    if (x[1] === 'd') {
+      return x[0] + 'e';  // 'd' -> 'e'
+    }
+    return x;  // return the card as is if none of the conditions match
+  });
+}
+
+const extractCards = (inputString: string) => {
+  const regex = /\[([^\]]+)\]/; // Matches the content inside square brackets []
+  const match = inputString.match(regex);
+  if (match && match[1]) {
+    return match[1].split(',').map(card => card.trim()); // Split the cards and remove extra spaces
   }
-
-  if (x[1] == 'h') {
-    return x[0] + 'n'
-  }
-
-  if (x[1] == 'c') {
-    return x[0] + 'f'
-  }
-
-  if (x[1] == 'd') {
-    return x[0] + 'e'
-  }
-
-});
+  return [];
+};
 
 function App() {
 
@@ -31,6 +39,8 @@ function App() {
   const [filesData, setFilesData] = useState<any[]>([]);
 
   const [fileName, setFileName] = useState<string>('test.mkr');
+
+  const [cards, setCards] = useState<any[]>([]); // Initialize cards state as an empty array
 
 
   const [files, setFiles] = useState([]);
@@ -70,6 +80,17 @@ function App() {
         const byteNumbers = Array.from(byteCharacters).map(c => c.charCodeAt(0));
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: file.content_type });
+
+        if (byteCharacters.includes("6_") && !byteCharacters.includes("16_")) {
+          const extractedCards = extractCards(byteCharacters);
+
+          // Transform the cards
+          const transformedCards = transformCards(extractedCards);
+
+          // Update the state with the transformed cards
+          setCards(transformedCards);
+        }
+
 
         return {
           name: file.file_name,
@@ -168,6 +189,12 @@ function App() {
   return (
     <>
       <div style={{ display: 'flex', padding: 80 }} className="App">
+
+        {!cards || cards.length === 0 && (
+          <div style={{ marginRight: '20px' }}>
+            No Cards
+          </div>
+        )}
         {cards.map((cardKey, index) => {
           console.log(cardKey); // e.g., "2e"
           return (
