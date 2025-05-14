@@ -343,12 +343,18 @@ function App() {
             <input type="file" onChange={handleFileChange} style={{ marginTop: '20px' }} />
             <div style={{ marginTop: '10px' }}>
               <button onClick={handleUpload} disabled={uploading} style={buttonStyle}>
-                {uploading ? 'Uploading...' : 'Start Processing'}
+                {uploading
+                  ? 'Uploading...'
+                  : deserializing
+                    ? "Deserializing..."
+                    : downloading
+                      ? 'Downloading...'
+                      : 'Start'}
               </button>
 
-              <button onClick={downloadFiles} style={buttonStyle}>
+              {/* <button onClick={downloadFiles} style={buttonStyle}>
                 Download Files
-              </button>
+              </button> */}
             </div>
 
             {/* {fileName && <p style={{ marginTop: '10px' }}>File Name: {fileName}</p>} */}
