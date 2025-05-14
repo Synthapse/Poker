@@ -123,7 +123,7 @@ public class MkrFileProcessor implements HttpFunction {
                     System.out.println(".jar download completed.");
 
                     System.out.println("Running fallback command...");
-                    String output = runCommand(inputFile);
+                    String output = runCommand(inputFile);  // this returns the full output from the .jar
                     overallOutput.append(output).append("\n");
                     System.out.println("Fallback command executed.");
 
@@ -133,15 +133,15 @@ public class MkrFileProcessor implements HttpFunction {
                     BlobInfo outputBlobInfo = BlobInfo.newBuilder(outputBlobId)
                         .setContentType("text/plain")
                         .build();
-                    
-                    // Save fallback output
-                    storage.create(outputBlobInfo, outputBuilder.toString().getBytes(StandardCharsets.UTF_8));
+
+                    // ✅ Save the actual output returned from runCommand()
+                    storage.create(outputBlobInfo, output.getBytes(StandardCharsets.UTF_8));
 
                     overallOutput.append("Processed file (fallback): ")
-                                .append(blob.getName())
-                                .append(" -> ")
-                                .append(outputBlobName)
-                                .append("\n");
+                        .append(blob.getName())
+                        .append(" -> ")
+                        .append(outputBlobName)
+                        .append("\n");
 
                     continue;
                 }
@@ -181,33 +181,51 @@ public class MkrFileProcessor implements HttpFunction {
     }
 
     // Method to run the JAR file using ProcessBuilder
-    private String runCommand(File inputFile) throws IOException, InterruptedException {
-        String[] command = {
-            "java", "-jar", TEMP_JAR_PATH, inputFile.getAbsolutePath(),
-            "|", "grep", "-oE", "[0-9]+"
-        };
+    public String runCommand(File inputFile) throws IOException, InterruptedException {
+        String command = String.format("java -jar %s %s", TEMP_JAR_PATH, inputFile.getAbsolutePath());
 
-        ProcessBuilder processBuilder = new ProcessBuilder(command);
-        processBuilder.redirectErrorStream(true); // Merge error and output streams
+        System.out.println("Working directory: " + new File(".").getAbsolutePath());
+        System.out.println("Running java command... in path " + inputFile.getAbsolutePath());
 
+        // Ensure the process builder works and command is formatted properly
+        ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", command);
+        processBuilder.redirectErrorStream(true); // Merge stdout and stderr into a single stream
+
+        // Start the process
         Process process = processBuilder.start();
+
+        // Prepare to capture the output from the process (may be large)
         StringBuilder output = new StringBuilder();
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line).append("\n");
+        
+        // Create a separate thread to read the process's output in case it’s long-running
+        Thread outputThread = new Thread(() -> {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    output.append(line).append("\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
+        });
 
+        outputThread.start();
+
+        // Wait for the process to complete
         int exitCode = process.waitFor();
+        outputThread.join(); // Ensure the output thread finishes reading
+
         if (exitCode != 0) {
             throw new IOException("Error running command. Exit code: " + exitCode);
         }
 
-        return output.toString(); // Return the output of the command
-    }
+        // Save output to a file (next to the input file, named "[inputfilename].output.txt")
+        String outputText = output.toString();
+        Path outputFilePath = new File(inputFile.getParentFile(), inputFile.getName() + ".output.txt").toPath();
+        Files.write(outputFilePath, outputText.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 
+        return outputText; // Return the long response
+    }
 
     private static void processObject(Object obj, BufferedWriter writer, File file) throws IOException {
         writer.write("(Object[]): " + file.getName());

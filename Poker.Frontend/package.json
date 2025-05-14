@@ -17,8 +17,10 @@
     "postinstall-postinstall": "^2.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-loader-spinner": "^6.1.6",
     "react-poker": "^0.0.77",
     "react-scripts": "5.0.1",
+    "react-spinners": "^0.17.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },

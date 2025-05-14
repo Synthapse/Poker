@@ -42,6 +42,9 @@ gcloud functions deploy downloadFilesFunction \
 
 Java -> 
 
+While handling this request, the container instance was found to be using too much memory and was terminated. This is likely to cause a new container instance to be used for the next request to this revision. If you see this message frequently, you may have a memory leak in your code or may need more memory. Consider creating a new revision with more memory."
+
+
 gcloud info --run-diagnostics
 
 
@@ -55,6 +58,4 @@ gcloud functions deploy mkr-file-processor \
   --source . \
 
 
-  ERROR: (gcloud.functions.deploy) OperationError: code=3, message=Build failed with status: FAILURE and message: function has neither pom.xml nor already-built jar file; directory has these entries: .googlebuild, main.java. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/b87995aa-5437-4da9-abbb-55a41b897076?project=946555989276.
-
-  Lolek2345!
+ERROR: (gcloud.functions.deploy) OperationError: code=3, message=Build failed with status: FAILURE and message: function has neither pom.xml nor already-built jar file; directory has these entries: .googlebuild, main.java. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/b87995aa-5437-4da9-abbb-55a41b897076?project=946555989276.

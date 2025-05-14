@@ -1,6 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import { ClipLoader } from "react-spinners";
 
+
+const buttonStyle = {
+  marginRight: '10px',
+  padding: '8px 16px',
+  backgroundColor: '#007bff',
+  color: 'white',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+};
 
 
 const transformCards = (cardsArray: any) => {
@@ -35,6 +46,7 @@ function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
+
   const [deserializing, setDeserializing] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
@@ -48,6 +60,7 @@ function App() {
 
 
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Handle file selection
   const handleFileChange = (e: any) => {
@@ -55,15 +68,23 @@ function App() {
   };
 
 
-  const downloadFiles = async () => {
+  const downloadFiles = async (initialFileName?: any) => {
 
-    setDownloading(true);
-    setTimeout(() => {
-    }, 5000);
+    setLoading(true);
     const functionUrl = "https://us-central1-cognispace.cloudfunctions.net/downloadFilesFunction"; // Replace with your function URL
-    const folderName = fileName + '/deserialized/'
 
-    console.log(folderName);
+    let folderName;
+    console.log(initialFileName);
+
+    if (initialFileName) {
+      folderName = initialFileName + '/deserialized/';
+    }
+    else {
+      setDownloading(true);
+      setTimeout(() => {
+      }, 5000);
+      folderName = fileName + '/deserialized/';
+    }
 
     try {
       const response = await fetch(functionUrl, {
@@ -110,6 +131,7 @@ function App() {
       });
 
       setFiles(processedFiles);
+      setLoading(false);
     } catch (err) {
       console.error("Failed to fetch files:", err);
     } finally {
@@ -140,19 +162,54 @@ function App() {
       const text = await response.text(); // response is plain text
       console.log('Deserialized data:', text);
       setDeserializing(false);
+      fetchFolders();
       setTimeout(() => {
       }, 3000);
-      downloadFiles();
+      downloadFiles(fileName);
       // optionally: setFilesData(text);
     } catch (error) {
       console.error('Error during deserialization:', error);
       setTimeout(() => {
       }, 3000);
-      downloadFiles();
+      downloadFiles(fileName);
       setDeserializing(false);
+      fetchFolders();
     }
   };
 
+
+  const [folders, setFolders] = useState([]);
+
+  async function fetchFolders() {
+    const response = await fetch(
+      "https://storage.googleapis.com/storage/v1/b/auxilia-poker/o?delimiter=/"
+    );
+    const data = await response.json();
+    console.log(data);
+    const folders = data.prefixes.filter((x: any) => x != 'deck/' && x != 'static/' && x != 'tools/'); // Folders will be like "images/", "assets/"
+    console.log(folders);
+    if (data.prefixes) {
+      setFolders(folders)
+    }
+  }
+
+  useEffect(() => {
+    fetchFolders()
+  }, []);
+
+  const [selectedFolder, setSelectedFolder] = useState('');
+
+
+  function loadFolder(folder: React.SetStateAction<string>) {
+    setSelectedFolder(folder);
+    //@ts-ignore
+    setFileName(folder.replace('/', ''));
+    //@ts-ignore
+    downloadFiles(folder.replace('/', ''));
+
+    setCards([]);
+    // Optional: trigger file list download logic for this folder
+  }
 
   // Handle file upload
   const handleUpload = async () => {
@@ -199,96 +256,162 @@ function App() {
     }
   };
 
+  const [expandedIndexes, setExpandedIndexes] = useState<boolean[]>([]);
+
+  const toggleExpand = (idx: number) => {
+    setExpandedIndexes((prev) => {
+      const updated = [...prev];
+      updated[idx] = !updated[idx];
+      return updated;
+    });
+  };
+
   return (
     <>
-      <div style={{ display: 'flex', padding: 80 }} className="App">
-        {!cards || cards.length === 0 && (
-          <div style={{ display: 'flex' }}>
-            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
-            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
-            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
-            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
-            <div style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
+      <div style={{ display: 'flex' }}>
+        {/* Left Panel - Folder List */}
+        <div
+          style={{
+            minWidth: '200px',
+            maxWidth: '200px',
+            backgroundColor: '#f4f4f4',
+            padding: '20px',
+            borderRight: '1px solid #ccc',
+            minHeight: '100vh',
+          }}
+        >
+          <ul style={{ listStyle: 'none', padding: 0 }}>
+            {folders.map((folder: any, index) => (
+              <li key={index}>
+                <button
+                  onClick={() => loadFolder(folder)}
+                  style={{
+                    width: '100%',
+                    margin: '5px 0',
+                    padding: '8px',
+                    backgroundColor: selectedFolder === folder ? '#007bff' : '#e0e0e0',
+                    color: selectedFolder === folder ? 'white' : 'black',
+                    border: 'none',
+                    borderRadius: '4px',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {folder.replace('/', '')}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {loading ?
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100vh',
+              width: '100vw',
+            }}
+          >
+            <ClipLoader />
           </div>
-        )}
-        {cards.map((cardKey, index) => {
-          console.log(cardKey); // e.g., "2e"
-          return (
-            <div key={index} style={{ marginRight: '20px' }}>
-              <img
-                src={`${process.env.PUBLIC_URL}/deck/${cardKey}.png`}
-                alt={cardKey}
-                style={{ width: '40px', height: '60px', }}
-              />
-            </div>
-          );
-        })}
-      </div>
-      <input type="file" onChange={handleFileChange} />
 
-      <button onClick={handleUpload} disabled={uploading}>
-        {uploading ? 'Uploading...' : 'Start processing'}
-      </button>
-
-      {fileName && (
-        <>
-          <p>File Name: {fileName}</p>
-
-        </>
-      )}
-
-      {deserializing && (
-        <div>
-          <p>Deserializing... GCP bucket in folder: {fileName}</p>
-        </div>
-      )}
-
-      {downloading && (
-        <div>
-          <p>Downloading...</p>
-        </div>
-      )}
-
-      {/* 
-      <button onClick={handleDeserialization}>
-        Deserialize
-      </button> */}
-      
-      <button onClick={() => downloadFiles()}>
-        Download Files
-      </button>
-
-      {/* <button onClick={downloadFile}>
-        Download
-      </button> */}
-
-      {fileUrl && (
-        <div>
-          <h2>Download Link:</h2>
-          <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-            {fileUrl}
-          </a>
-        </div>
-      )}
-
-      {files.length > 0 && (
-        <div>
-          <h2>Files:</h2>
-          <ul></ul>
-          {files.map((file: any, idx: any) => (
-            <div key={idx}>
-              {file.text ? (
-                <pre style={{ backgroundColor: "#f0f0f0", padding: "10px" }}>
-                  {file.text}
-                </pre>
+          :
+          <div style={{ flex: 1, padding: '40px' }}>
+            <div style={{ display: 'flex' }} className="App">
+              {!cards || cards.length === 0 ? (
+                <div style={{ display: 'flex' }}>
+                  {[...Array(5)].map((_, idx) => (
+                    <div key={idx} style={{ width: '40px', height: '60px', backgroundColor: 'gray', marginRight: '20px' }} />
+                  ))}
+                </div>
               ) : (
-                <a href={file.url} download={file.name}>Download</a>
+                cards.map((cardKey, index) => (
+                  <div key={index} style={{ display: 'flex', marginRight: '20px' }}>
+                    <img
+                      src={`https://storage.googleapis.com/auxilia-poker/deck/${cardKey}.png`}
+                      alt={cardKey}
+                      style={{ width: '40px', height: '60px' }}
+                    />
+                  </div>
+                ))
               )}
             </div>
-          ))}
-        </div>
-      )}
-      <hr />
+
+            {/* File input and buttons */}
+            <input type="file" onChange={handleFileChange} style={{ marginTop: '20px' }} />
+            <div style={{ marginTop: '10px' }}>
+              <button onClick={handleUpload} disabled={uploading} style={buttonStyle}>
+                {uploading ? 'Uploading...' : 'Start Processing'}
+              </button>
+
+              <button onClick={downloadFiles} style={buttonStyle}>
+                Download Files
+              </button>
+            </div>
+
+            {/* {fileName && <p style={{ marginTop: '10px' }}>File Name: {fileName}</p>} */}
+            {deserializing && <p>Deserializing... GCP bucket in folder: {fileName}</p>}
+            {downloading && <p>Downloading...</p>}
+            {fileUrl && (
+              <div>
+                <h2>Download Link:</h2>
+                <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                  {fileUrl}
+                </a>
+              </div>
+            )}
+
+            {files.length > 0 && (
+              <div>
+                <h2>Data:</h2>
+                {files.sort((a: any, b: any) => b.size - a.size).map((file: any, idx) => (
+                  <div style={{ whiteSpace: 'pre-wrap', width: '800px', marginBottom: '10px' }} key={idx}>
+                    {file.text ? (
+                      <div>
+                        {file.name.split('_')[0]} -
+                        {file.size} Bytes
+                        <button
+                          onClick={() => toggleExpand(idx)}
+                          style={{
+                            marginBottom: '8px',
+                            padding: '5px 10px',
+                            cursor: 'pointer',
+                            backgroundColor: '#007bff',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px'
+                          }}
+                        >
+                          {expandedIndexes[idx] ? '-' : '+'}
+                        </button>
+                        {expandedIndexes[idx] && (
+                          <pre
+                            style={{
+                              whiteSpace: 'pre-wrap',
+                              width: '800px',
+                              backgroundColor: '#f0f0f0',
+                              padding: '10px',
+                              border: '1px solid #ccc'
+                            }}
+                          >
+                            {file.text}
+                          </pre>
+                        )}
+                      </div>
+                    ) : (
+                      <a href={file.url} download={file.name}>
+                        {file.name}
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        }
+      </div>
     </>
   );
 }
