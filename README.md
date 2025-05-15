@@ -9,6 +9,10 @@ The vector could represent:
 -> Street (preflop, flop, turn, river).
 
 
+https://github.com/openpokertools/openpokertools.com/tree/main?tab=readme-ov-file
+
+
+
 🧠 What You’ll Get After Unzipping
 You’ll likely see files like:
 
@@ -39,3 +43,38 @@ flowchart TD
     A[MKR] --> B[Python Function]
     B --> C[Java function]
 ```
+
+
+
+1. How to extract hands:
+
+Because Monker uses suit normalization, a hand like AsKsJhTd and AhKhJdTc might be treated as equivalent and share the same ID.
+
+
+
+But tools exist to:
+
+https://pokertool.bluffingmonkeys.com/#nav-river
+
+
+Reverse-map hand IDs to cards (with exported strategy files)
+
+View ranges in GUI using card names, not IDs
+
+
+-> https://github.com/ksoeze/PreflopAdvisor?utm_source=chatgpt.com
+-> https://github.com/OwenQian/monkersim_helper?utm_source=chatgpt.com
+
+https://asciinema.org/a/iRUQndBjtQE7f26rcvq8n7S7p
+
+
+MonkerSolver assigns numeric IDs (e.g., 0–270724) to each unique 4-card PLO hand, after suit normalization.
+
+So we must:
+
+- Generate every possible 4-card PLO hand (combinatorially from 52 cards).
+- Normalize suits (to group suit-equivalent hands together).
+- Sort all normalized hands in lex order (Monker-like ordering).
+- Assign IDs in order → boom, you get your handId → handString mapping.
+
+

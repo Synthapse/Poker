@@ -42,6 +42,8 @@ gcloud functions deploy downloadFilesFunction \
 
 Java -> 
 
+256 -> 512
+
 While handling this request, the container instance was found to be using too much memory and was terminated. This is likely to cause a new container instance to be used for the next request to this revision. If you see this message frequently, you may have a memory leak in your code or may need more memory. Consider creating a new revision with more memory."
 
 

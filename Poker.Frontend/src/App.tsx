@@ -14,6 +14,8 @@ const buttonStyle = {
 };
 
 
+
+
 const transformCards = (cardsArray: any) => {
   return cardsArray.map((x: string[]) => {
     if (x[1] === 's') {
@@ -358,7 +360,7 @@ function App() {
             </div>
 
             {/* {fileName && <p style={{ marginTop: '10px' }}>File Name: {fileName}</p>} */}
-            {deserializing && <p>Deserializing... GCP bucket in folder: {fileName}</p>}
+            {/* {deserializing && <p>Deserializing... GCP bucket in folder: {fileName}</p>} */}
             {downloading && <p>Downloading...</p>}
             {fileUrl && (
               <div>
@@ -402,7 +404,14 @@ function App() {
                               border: '1px solid #ccc'
                             }}
                           >
-                            {file.text}
+                            {idx === 0 ? (
+                              file.text
+                                .split('read:')
+                                .sort((x: any, y: any) => y.length - x.length)
+                                .map((line: any, index: number) => {
+                                  return <TextSection key={index} section={line} index={index} />;
+                                })) : file.text}
+
                           </pre>
                         )}
                       </div>
@@ -421,5 +430,30 @@ function App() {
     </>
   );
 }
+
+
+
+const TextSection = ({ section, index }: { section: string, index: number }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleExpand = () => setExpanded((prev) => !prev);
+
+  return (
+    <div style={{ marginBottom: '20px' }}>
+      <h3>Section {index + 1} ({section.length})</h3>
+      <button onClick={toggleExpand}>
+        {expanded ? 'Show Less' : 'Show More'}
+      </button>
+      <div>
+        {expanded && (
+          <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+            {section}
+          </pre>
+        )}
+      </div>
+    </div>
+  );
+};
+
 
 export default App;
